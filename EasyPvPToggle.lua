@@ -5,10 +5,8 @@
 
 -- Variables
 local addon_name = "EasyPvPToggle"
-local imgFolder = "Interface\\ICONS\\"
 CF = CreateFrame
-local eptFrame = 
-SLASH_EASYPVPTOGGLE = '/epvpt' or '/EPvPT'
+SLASH_EASYPVPTOGGLE1 = "/epvpt" or "/EPvPT"
 
 -- RegisterForEvent table
 local eptEvents_table = {}
@@ -45,7 +43,7 @@ function eptEvents_table.eventFrame:ADDON_LOADED(AddOn)
 			if type(v) == "table" then
 				dst[k] = eptSVCheck(v, dst[k])
 			elseif type(v) ~= type(dst[k]) then
-				dst[k] = k
+				dst[k] = v
 			end
 		end
 		return dst
@@ -104,20 +102,20 @@ function eptOptionsInit()
 	local author = createfont("GameFontNormal", "Author: " .. GetAddOnMetadata(addon_name, "Author"))
 	author:SetPoint("TOPLEFT", date, "BOTTOMLEFT", 0, -8)
 	local website = createfont("GameFontNormal", "Website: " .. GetAddOnMetadata(addon_name, "X-Website"))
-	website:SetPoint("TOPLEFT", maintainer, "BOTTOMLEFT", 0, -8)
+	website:SetPoint("TOPLEFT", author, "BOTTOMLEFT", 0, -8)
 	local desc = createfont("GameFontHighlight", GetAddOnMetadata(addon_name, "Notes"))
 	desc:SetPoint("TOPLEFT", website, "BOTTOMLEFT", 0, -8)
 
 	-- Misc Options Frame
 	local eptMiscFrame = CF("Frame", EPTMiscFrame, eptOptions)
-	eptMiscFrame:SetPoint("TOPLEFT", desc2, "BOTTOMLEFT", 0, -8)
+	eptMiscFrame:SetPoint("TOPLEFT", desc, "BOTTOMLEFT", 0, -8)
 	eptMiscFrame:SetBackdrop(eptOptionsBG)
 	eptMiscFrame:SetSize(240, 215)
 
 	local miscTitle = createfont("GameFontNormal", nil, nil, nil, "TOP", eptMiscFrame, "TOP", 150, 16, 0, -8, "Miscellaneous Options")
 
 	-- Enable Mouseover
-	local eptMouseOverOpt = createcheckbox("Enable Mouseover of Skill Helper.", 18, 18, "TOPLEFT", miscTitle, "TOPLEFT", -40, -16, "eptMouseOverOpt")
+	local eptMouseOverOpt = createcheckbox("Enable Mouseover of Easy PvP Toggle.", 18, 18, "TOPLEFT", miscTitle, "TOPLEFT", -40, -16, "eptMouseOverOpt")
 
 	eptMouseOverOpt:SetScript("OnClick", function(self)
 		if eptMouseOverOpt:GetChecked() == true then
@@ -233,7 +231,7 @@ function eptToggle()
 end
 
 function eptInit()
-	eptFrame:SetScale(eptSettings.options.eptScale)
+	eptFrame:SetScale(eptSettings.options.eptScale);
 
 	if eptSettings.options.eptLock == true then
 		eptFrame:EnableMouse(true)
@@ -288,7 +286,7 @@ function SlashCmdList.EASYPVPTOGGLE(msg)
 		ChatFrame1:AddMessage("|cff71C671" .. addon_name .. " Slash Commands|r")
 		ChatFrame1:AddMessage("|cff71C671type /EPvPT followed by:|r")
 		ChatFrame1:AddMessage("|cff71C671  -- toggle to toggle the addon hidden state|r")
-		ChatFrame1:AddMessage("|cff71C671  -- toggle PvP flag state|r")
+		ChatFrame1:AddMessage("|cff71C671  -- pvp to toggle PvP flag state|r")
 		ChatFrame1:AddMessage("|cff71C671  -- lock to toggle locking|r")
 		ChatFrame1:AddMessage("|cff71C671  -- options to open addon options|r")
 		ChatFrame1:AddMessage("|cff71C671  -- info to view current build information|r")
@@ -309,15 +307,19 @@ function eptToggle()
 end
 
 function eptPvPToggle()
-	local flag = GetPvPDesired() -- 1 = Flagged, 0 = Not Flagged
-	if flag == eptSettings.options.eptPvP then
-		--
-	elseif flag ~= eptSettings.options.eptPvP then
-		eptSettings.options.eptPvP = flag
+	local flag = GetPVPDesired() -- true = Flagged, false = Not Flagged
+	if flag == false then
+		if eptSettings.options.eptPvP == 0 then
+			-- nothing
+		elseif eptSettings.options.eptPvP == 1 then
+			eptSettings.options.eptPvP = 0
+		end
 	end
 	if eptSettings.options.eptPvP == 0 then
+		eptSettings.options.eptPvP = 1
 		SetPVP(1); -- Flag for PvP
 	elseif eptSettings.options.eptPvP == 1 then
+		eptSettings.options.eptPvP = 0
 		SetPVP(0); -- Deflag for PvP
 	end
 end
@@ -326,12 +328,10 @@ function eptLocker()
 	-- Remember eptLock is backwards. true for unlocked and false for locked
 	if eptSettings.options.eptLock == true then
 		eptSettings.options.eptLock = false
-		eptFrame.buttonLock:SetChecked(false)
 		eptFrame:EnableMouse(eptSettings.options.eptLock)
 		ChatFrame1:AddMessage(addon_name .. " |cffff0000locked|r!")
 	elseif eptSettings.options.eptLock == false then
 		eptSettings.options.eptLock = true
-		eptFrame.buttonLock:SetChecked(true)
 		eptFrame:EnableMouse(eptSettings.options.eptLock)
 		ChatFrame1:AddMessage(addon_name .. " |cff00ff00unlocked|r!")
 	end
