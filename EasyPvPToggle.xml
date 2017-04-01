@@ -5,7 +5,7 @@
 	<Script file = "EasyPvPToggle.lua" />
 
 	<!-- Main Frame -->
-	<Frame name="eptFrame" frameStrata="BACKGROUND" moveable="true" clampedToScreen="true" parent="UIParent">
+	<Frame name="eptFrame" frameStrata="BACKGROUND" movable="true" clampedToScreen="true" parent="UIParent">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 			<BackgroundInsets>
 				<AbsInset left="3" right="3" top="3" bottom="3" />
@@ -18,7 +18,7 @@
 			</EdgeSize>
 			<!-- Color -->
 		</Backdrop>
-		<Size x="20" y="20" />
+		<Size x="40" y="40" />
 		<Anchors>
 			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent" />
 		</Anchors>
@@ -26,7 +26,7 @@
 		<!-- Toggle Button -->
 		<Frames>
 			<CheckButton name="$parentButtonToggle" parentKey="buttonToggle">
-				<Size x="18" y="18" />
+				<Size x="24" y="24" />
 				<Anchors>
 					<Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent" />
 				</Anchors>
@@ -38,7 +38,7 @@
 						GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 						GameTooltip:ClearLines();
 						GameTooltip:SetText("PvP Flag Toggle");
-						if eptSetting.options.eptPvP == 0 then
+						if eptSettings.options.eptPvP == 0 then
 							GameTooltip:AddLine("PvP Diabled");
 						elseif eptSettings.options.eptPvP == 1 then
 							GameTooltip:AddLine("PvP Enabled");
