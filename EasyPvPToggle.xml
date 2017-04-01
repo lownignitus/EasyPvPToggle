@@ -1,0 +1,88 @@
+<!-- Easy PvP Toggle v1.0.0 -->
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\..\FrameXML\UI.xsd">
+
+	<Script file = "EasyPvPToggle.lua" />
+
+	<!-- Main Frame -->
+	<Frame name="eptFrame" frameStrata="BACKGROUND" moveable="true" clampedToScreen="true" parent="UIParent">
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+			<BackgroundInsets>
+				<AbsInset left="3" right="3" top="3" bottom="3" />
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="16" />
+			</EdgeSize>
+			<!-- Color -->
+		</Backdrop>
+		<Size x="20" y="20" />
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent" />
+		</Anchors>
+
+		<!-- Toggle Button -->
+		<Frames>
+			<CheckButton name="$parentButtonToggle" parentKey="buttonToggle">
+				<Size x="18" y="18" />
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="CENTER" relativeTo="$parent" />
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						eptPvPToggle();
+					</OnClick>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
+						GameTooltip:ClearLines();
+						GameTooltip:SetText("PvP Flag Toggle");
+						if eptSetting.options.eptPvP == 0 then
+							GameTooltip:AddLine("PvP Diabled");
+						elseif eptSettings.options.eptPvP == 1 then
+							GameTooltip:AddLine("PvP Enabled");
+						end
+						GameTooltip:Show();
+						eptMouseOverEnter();
+					</OnEnter>
+					<OnLeave>
+						GameTooltip:Hide();
+						eptMouseOverLeave();
+					</OnLeave>
+				</Scripts>
+				local engFact, locFact = UnitFactionGroup("player")
+				if engFact == "Alliance" then
+					<NormalTexture file="Interface\Icons\achievement_pvp_h_a" />
+					<PushedTexture file="Interface\Icons\achievement_pvp_o_a" />
+					<CheckedTexture file="Interface\Icons\achievement_pvp_g_a" />
+				elseif engFact == "Horde" then
+					<NormalTexture file="Interface\Icons\achievement_pvp_h_h" />
+					<PushedTexture file="Interface\Icons\achievement_pvp_o_h" />
+					<CheckedTexture file="Interface\Icons\achievement_pvp_g_h" />
+				end
+				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD" />
+			</CheckButton>
+		</Frames>
+
+		<Scripts>
+			<OnLoad>
+				self:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnDragStart>
+				self:StartMoving();
+			</OnDragStart>
+			<OnDragStop>
+				self:StopMovingOrSizing();
+			</OnDragStop>
+			<OnEnter>
+				eptMouseOverEnter();
+			</OnEnter>
+			<OnLeave>
+				eptMouseOverLeave();
+			</OnLeave>
+		</Scripts>
+
+	</Frame>
+
+</Ui>
