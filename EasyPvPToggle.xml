@@ -51,16 +51,6 @@
 						eptMouseOverLeave();
 					</OnLeave>
 				</Scripts>
-				local engFact, locFact = UnitFactionGroup("player")
-				if engFact == "Alliance" then
-					<NormalTexture file="Interface\Icons\achievement_pvp_h_a" />
-					<PushedTexture file="Interface\Icons\achievement_pvp_o_a" />
-					<CheckedTexture file="Interface\Icons\achievement_pvp_g_a" />
-				elseif engFact == "Horde" then
-					<NormalTexture file="Interface\Icons\achievement_pvp_h_h" />
-					<PushedTexture file="Interface\Icons\achievement_pvp_o_h" />
-					<CheckedTexture file="Interface\Icons\achievement_pvp_g_h" />
-				end
 				<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD" />
 			</CheckButton>
 		</Frames>

@@ -27,7 +27,7 @@ function eptEvents_table.eventFrame:ADDON_LOADED(AddOn)
 
 	local defaults = {
 		["options"] = {
-			["eptHidden"] = true,
+			["eptHidden"] = false,
 			["eptMouseOver"] = false,
 			["eptLock"] = true,
 			["eptScale"] = 1,
@@ -231,6 +231,16 @@ function eptToggle()
 end
 
 function eptInit()
+	local engFact, locFact = UnitFactionGroup("player")
+	if engFact == "Alliance" then
+		eptFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_h_a")
+		eptFrame.buttonToggle:SetPushedTexture("Interface\\Icons\\achievement_pvp_o_a")
+		eptFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_g_a")
+	elseif engFact == "Horde" then
+		eptFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_h_h")
+		eptFrame.buttonToggle:SetPushedTexture("Interface\\Icons\\achievement_pvp_o_h")
+		eptFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_g_h")
+	end
 	eptFrame:SetScale(eptSettings.options.eptScale);
 
 	if eptSettings.options.eptLock == true then
