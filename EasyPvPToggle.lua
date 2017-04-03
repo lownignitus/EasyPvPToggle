@@ -55,6 +55,32 @@ function eptEvents_table.eventFrame:ADDON_LOADED(AddOn)
 	eptInit();
 end
 
+	print("Unit: " .. unitID)
+	if unitID == "player" then
+		local state = GetPVPDesired() -- true = Flagged, false = Not Flagged
+		if state == false then
+			print("Flagged: false")
+			local isRunning = IsPVPTimerRunning()
+			if isRunning == true then
+				isRunning = "true"
+			elseif isRunning == false then
+				isRunning = "false"
+			end
+			local timer = GetPVPTimer()
+			print("PvP Timer: " .. isRunning .. ", " .. timer)
+		elseif state == true then
+			print("Flagged: true")
+			local isRunning = IsPVPTimerRunning()
+			if isRunning == true then
+				isRunning = "true"
+			elseif isRunning == false then
+				isRunning = "false"
+			end
+			local timer = GetPVPTimer()
+			print("PvP Timer: " .. isRunning .. ", " .. timer)
+		end
+	end
+
 function eptOptionsInit()
 	local eptOptions = CF("Frame", nil, InterfaceOptionsFramePanelContainer);
 	local panelWidth = InterfaceOptionsFramePanelContainer:GetWidth() -- ~623
@@ -224,10 +250,6 @@ function eptOptionsInit()
 	-- add the Options panel to the Blizzard list
 	InterfaceOptions_AddCategory(eptOptions);
 	-- End Skill Helper Options
-end
-
-function eptToggle()
-	 
 end
 
 function eptInit()
