@@ -35,19 +35,9 @@
 						eptPvPToggle();
 					</OnClick>
 					<OnEnter>
-						GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
-						GameTooltip:ClearLines();
-						GameTooltip:SetText("PvP Flag Toggle");
-						if eptSettings.options.eptPvP == 0 then
-							GameTooltip:AddLine("PvP Diabled");
-						elseif eptSettings.options.eptPvP == 1 then
-							GameTooltip:AddLine("PvP Enabled");
-						end
-						GameTooltip:Show();
 						eptMouseOverEnter();
 					</OnEnter>
 					<OnLeave>
-						GameTooltip:Hide();
 						eptMouseOverLeave();
 					</OnLeave>
 				</Scripts>

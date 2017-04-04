@@ -13,6 +13,7 @@ local eptEvents_table = {}
 
 eptEvents_table.eventFrame = CF("Frame");
 eptEvents_table.eventFrame:RegisterEvent("ADDON_LOADED");
+--eptEvents_table.eventFrame:RegisterEvent("UNIT_FACTION");
 eptEvents_table.eventFrame:SetScript("OnEvent", function(self, event, ...)
 	eptEvents_table.eventFrame[event](self, ...);
 end);
@@ -55,6 +56,7 @@ function eptEvents_table.eventFrame:ADDON_LOADED(AddOn)
 	eptInit();
 end
 
+--[[function eptEvents_table.eventFrame:UNIT_FACTION(unitID)
 	print("Unit: " .. unitID)
 	if unitID == "player" then
 		local state = GetPVPDesired() -- true = Flagged, false = Not Flagged
@@ -80,6 +82,7 @@ end
 			print("PvP Timer: " .. isRunning .. ", " .. timer)
 		end
 	end
+end]]
 
 function eptOptionsInit()
 	local eptOptions = CF("Frame", nil, InterfaceOptionsFramePanelContainer);
@@ -294,12 +297,22 @@ end
 function eptMouseOverEnter()
 	if eptSettings.options.eptMouseOver == true then
 		eptFrame:SetAlpha(1);
+		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
+		GameTooltip:ClearLines();
+		GameTooltip:SetText("PvP Flag Toggle");
+		if eptSettings.options.eptPvP == 0 then
+			GameTooltip:AddLine("PvP Diabled");
+		elseif eptSettings.options.eptPvP == 1 then
+			GameTooltip:AddLine("PvP Enabled");
+		end
+	GameTooltip:Show();
 	end
 end
 
 function eptMouseOverLeave()
 	if eptSettings.options.eptMouseOver == true then
 		eptFrame:SetAlpha(eptSettings.options.eptAlpha);
+		GameTooltip:Hide();
 	end
 end
 
