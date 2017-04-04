@@ -35,6 +35,7 @@
 						eptPvPToggle();
 					</OnClick>
 					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 						eptMouseOverEnter();
 					</OnEnter>
 					<OnLeave>

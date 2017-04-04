@@ -297,7 +297,6 @@ end
 function eptMouseOverEnter()
 	if eptSettings.options.eptMouseOver == true then
 		eptFrame:SetAlpha(1);
-		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT");
 		GameTooltip:ClearLines();
 		GameTooltip:SetText("PvP Flag Toggle");
 		if eptSettings.options.eptPvP == 0 then
