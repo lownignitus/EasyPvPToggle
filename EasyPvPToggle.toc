@@ -1,8 +1,8 @@
-## Interface: 70200
+## Interface: 70300
 ## Title: |cff00ff00Easy PvP Toggle|r
 ## Author: |cffDA70D6LownIgnitus|r Mihkael@US-Alexstrasza
-## Version: |cffFF4500v1.0.0|r
-## X-Date: 01/04/2017
+## Version: |cffFF4500v1.0.1|r
+## X-Date: 30/08/2017
 ## X-Website: https://www.facebook.com/groups/190240457669378/
 ## Notes: Displayable or mouseoverable button for quick easy PvP flagging
 ## Dependancies:

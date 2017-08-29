@@ -1,6 +1,6 @@
 --[[ Title: Easy PvP Toggle
 	 Author: LownIgnitus
-	 Version: 1.0.0
+	 Version: 1.0.1
 	 Desc: Displayable or mouseoverable button for quick easy PvP flagging]]
 
 -- Variables
