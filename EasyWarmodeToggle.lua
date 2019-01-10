@@ -7,6 +7,7 @@ Desc: Displayable or mouseoverable button for quick easy Warmode flagging
 
 -- Variables
 local addon_name = "EasyWarmodeToggle"
+local ewtCombat = false
 CF = CreateFrame
 SLASH_EASYWARMODETOGGLE1 = "/ewt" or "/EWT" 
 
@@ -15,6 +16,8 @@ local ewtEvents_table = {}
 
 ewtEvents_table.eventFrame = CF("Frame");
 ewtEvents_table.eventFrame:RegisterEvent("ADDON_LOADED");
+ewtEvents_table.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+ewtEvents_table.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
 ewtEvents_table.eventFrame:SetScript("OnEvent", function(self, event, ...)
 	ewtEvents_table.eventFrame[event](self, ...);
 end);
@@ -55,6 +58,18 @@ function ewtEvents_table.eventFrame:ADDON_LOADED(AddOn)
 
 	ewtOptionsInit();
 	ewtInit();
+end
+
+function ewtEvents_table.eventFrame:PLAYER_REGEN_ENABLED( ... )
+	if ewtCombat == true then
+		ewtCombat = false
+	end
+end
+
+function ewtEvents_table.eventFrame:PLAYER_REGEN_DISABLED( ... )
+	if ewtCombat == false then
+		ewtCombat = true
+	end
 end
 
 function ewtOptionsInit()
@@ -229,16 +244,17 @@ function ewtOptionsInit()
 end
 
 function ewtInit()
-	local engFact, locFact = UnitFactionGroup("player")
+	local engFact = UnitFactionGroup("player")
 	if engFact == "Alliance" then
-		ewtFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_h_a")
+		ewtFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_g_a")
 		ewtFrame.buttonToggle:SetPushedTexture("Interface\\Icons\\achievement_pvp_o_a")
-		ewtFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_g_a")
+		ewtFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_h_a")
 	elseif engFact == "Horde" then
-		ewtFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_h_h")
+		ewtFrame.buttonToggle:SetNormalTexture("Interface\\Icons\\achievement_pvp_g_h")
 		ewtFrame.buttonToggle:SetPushedTexture("Interface\\Icons\\achievement_pvp_o_h")
-		ewtFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_g_h")
+		ewtFrame.buttonToggle:SetCheckedTexture("Interface\\Icons\\achievement_pvp_h_h")
 	end
+
 	ewtFrame:SetScale(ewtSettings.options.ewtScale);
 
 	if ewtSettings.options.ewtLock == true then
@@ -260,6 +276,8 @@ function ewtInit()
 		ewtMouseOverOpt:SetChecked(false)
 	end
 
+	ewtSettings.options.ewtWarmode = C_PvP.IsWarModeActive();
+
 	if ewtSettings.options.ewtWarmode == false then
 		ewtFrame.buttonToggle:SetChecked(false)
 	else
@@ -270,21 +288,12 @@ end
 function ewtMouseOverEnter()
 	if ewtSettings.options.ewtMouseOver == true then
 		ewtFrame:SetAlpha(1);
-		GameTooltip:ClearLines();
-		GameTooltip:SetText("Warmode Toggle");
-		if ewtSettings.options.ewtWarmode == false then
-			GameTooltip:AddLine("Warmode Diabled");
-		elseif ewtSettings.options.ewtWarmode == true then
-			GameTooltip:AddLine("Warmode Enabled");
-		end
-	GameTooltip:Show();
 	end
 end
 
 function ewtMouseOverLeave()
 	if ewtSettings.options.ewtMouseOver == true then
 		ewtFrame:SetAlpha(ewtSettings.options.ewtAlpha);
-		GameTooltip:Hide();
 	end
 end
 
@@ -311,51 +320,57 @@ function SlashCmdList.EASYWARMODETOGGLE(msg)
 end
 
 function ewtToggle()
-	-- true for it is hidden and false for it isn't hidden
-	if ewtSettings.options.ewtHidden == false then
-		ewtFrame:Hide()
-		ChatFrame1:AddMessage(addon_name .. " |cffff0000hidden|r!")
-		ewtSettings.options.ewtHidden = true
-	elseif ewtSettings.options.ewtHidden == true then
-		ewtFrame:Show()
-		ChatFrame1:AddMessage(addon_name .. " |cff00ff00visible|r!")
-		ewtSettings.options.ewtHidden = false
+	if ewtCombat == false then
+		-- true for it is hidden and false for it isn't hidden
+		if ewtSettings.options.ewtHidden == false then
+			ewtFrame:Hide()
+			ChatFrame1:AddMessage(addon_name .. " |cffff0000hidden|r!")
+			ewtSettings.options.ewtHidden = true
+		elseif ewtSettings.options.ewtHidden == true then
+			ewtFrame:Show()
+			ChatFrame1:AddMessage(addon_name .. " |cff00ff00visible|r!")
+			ewtSettings.options.ewtHidden = false
+		end
 	end
 end
 
 function ewtWarmodeToggle()
-	local flag = C_PvP.IsWarModeActive() -- true = Flagged, false = Not Flagged
-	if flag == false then
+	if ewtCombat == false then
+		local flag = C_PvP.IsWarModeActive() -- true = Flagged, false = Not Flagged
+		if flag == false then
+			if ewtSettings.options.ewtWarmode == false then
+				-- nothing
+			elseif ewtSettings.options.ewtWarmode == true then
+				ewtSettings.options.ewtWarmode = false
+			end
+		end
 		if ewtSettings.options.ewtWarmode == false then
-			-- nothing
+			ewtSettings.options.ewtWarmode = true
+			C_PvP.ToggleWarMode(); -- Flag for Warmode
 		elseif ewtSettings.options.ewtWarmode == true then
 			ewtSettings.options.ewtWarmode = false
+			C_PvP.ToggleWarMode(); -- Deflag for Warmode
 		end
-	end
-	if ewtSettings.options.ewtWarmode == false then
-		ewtSettings.options.ewtWarmode = true
-		C_PvP.ToggleWarMode(); -- Flag for Warmode
-	elseif ewtSettings.options.ewtWarmode == true then
-		ewtSettings.options.ewtWarmode = false
-		C_PvP.ToggleWarMode(); -- Deflag for Warmode
 	end
 end
 
 function ewtLocker()
-	-- Remember ewtLock is backwards. true for unlocked and false for locked
-	if ewtSettings.options.ewtLock == true then
-		ewtSettings.options.ewtLock = false
-		ewtFrame:EnableMouse(ewtSettings.options.ewtLock)
-		ChatFrame1:AddMessage(addon_name .. " |cffff0000locked|r!")
-	elseif ewtSettings.options.ewtLock == false then
-		ewtSettings.options.ewtLock = true
-		ewtFrame:EnableMouse(ewtSettings.options.ewtLock)
-		ChatFrame1:AddMessage(addon_name .. " |cff00ff00unlocked|r!")
+	if ewtCombat == false then
+		-- Remember ewtLock is backwards. true for unlocked and false for locked
+		if ewtSettings.options.ewtLock == true then
+			ewtSettings.options.ewtLock = false
+			ewtFrame:EnableMouse(ewtSettings.options.ewtLock)
+			ChatFrame1:AddMessage(addon_name .. " |cffff0000locked|r!")
+		elseif ewtSettings.options.ewtLock == false then
+			ewtSettings.options.ewtLock = true
+			ewtFrame:EnableMouse(ewtSettings.options.ewtLock)
+			ChatFrame1:AddMessage(addon_name .. " |cff00ff00unlocked|r!")
+		end
 	end
 end
 
 function ewtOption()
-	InterfaceOptionsFrame_OpenToCategory("|cff00ff00Easy Warmode Toggle|");
+	InterfaceOptionsFrame_OpenToCategory("|cff00ff00Easy Warmode Toggle|r");
 	InterfaceOptionsFrame_OpenToCategory("|cff00ff00Easy Warmode Toggle|r");
 end
 
