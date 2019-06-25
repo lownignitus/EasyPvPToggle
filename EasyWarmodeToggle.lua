@@ -1,7 +1,7 @@
 --[[ 
 Title: Easy Warmode Toggle
 Author: LownIgnitus
-Version: 1.0.0
+Version: v1.0.1
 Desc: Displayable or mouseoverable button for quick easy Warmode flagging
 ]]
 
@@ -24,7 +24,7 @@ end);
 
 function ewtEvents_table.eventFrame:ADDON_LOADED(AddOn)
 	if AddOn ~= addon_name then
-		return - not addon_name
+		return -- not addon_name
 	end
 
 	-- Unregister ADDON_LOADED
