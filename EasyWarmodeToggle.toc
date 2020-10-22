@@ -1,8 +1,8 @@
-## Interface: 80200
+## Interface: 90001
 ## Title: |cff00ff00Easy Warmode Toggle|r
 ## Author: |cffDA70D6LownIgnitus|r Mihkael@US-Alexstrasza
-## Version: |cffFF4500v1.0.1|r
-## X-Date: 25/06/2019
+## Version: |cffFF4500v1.0.2|r
+## X-Date: 22/10/2020
 ## X-Website: https://github.com/lownignitus/EasyWarmodeToggle
 ## Notes: Displayable or mouseoverable button for quick easy Warmode Toggle
 ## Dependancies:

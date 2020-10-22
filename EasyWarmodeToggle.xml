@@ -1,11 +1,11 @@
-<!-- Easy Warmode Toggle v1.0.0 -->
+<!-- Easy Warmode Toggle v1.0.2 -->
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\..\FrameXML\UI.xsd">
 
 	<Script file = "EasyWarmodeToggle.lua" />
 
 	<!-- Main Frame -->
-	<Frame name="ewtFrame" frameStrata="BACKGROUND" movable="true" clampedToScreen="true" parent="UIParent">
+	<Frame name="ewtFrame" frameStrata="BACKGROUND" movable="true" clampedToScreen="true" inherits="BackdropTemplate" parent="UIParent">
 		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
 			<BackgroundInsets>
 				<AbsInset left="3" right="3" top="3" bottom="3" />

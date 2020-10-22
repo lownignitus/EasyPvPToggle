@@ -1,7 +1,7 @@
 --[[ 
 Title: Easy Warmode Toggle
 Author: LownIgnitus
-Version: v1.0.1
+Version: v1.0.2
 Desc: Displayable or mouseoverable button for quick easy Warmode flagging
 ]]
 
@@ -124,7 +124,7 @@ function ewtOptionsInit()
 	desc:SetPoint("TOPLEFT", website, "BOTTOMLEFT", 0, -8)
 
 	-- Misc Options Frame
-	local ewtMiscFrame = CF("Frame", ewtMiscFrame, ewtOptions)
+	local ewtMiscFrame = CF("Frame", ewtMiscFrame, ewtOptions, "BackdropTemplate")
 	ewtMiscFrame:SetPoint("TOPLEFT", desc, "BOTTOMLEFT", 0, -8)
 	ewtMiscFrame:SetBackdrop(ewtOptionsBG)
 	ewtMiscFrame:SetSize(240, 215)
@@ -147,7 +147,7 @@ function ewtOptionsInit()
 		end
 	end)
 	-- Scale Frame
-	local ewtScaleFrame = CF("Frame", "ewtScaleFrame", ewtOptions)
+	local ewtScaleFrame = CF("Frame", "ewtScaleFrame", ewtOptions, "BackdropTemplate")
 	ewtScaleFrame:SetPoint("TOPLEFT", ewtMiscFrame, "TOPRIGHT", 8, 0)
 	ewtScaleFrame:SetBackdrop(ewtOptionsBG)
 	ewtScaleFrame:SetSize(150, 75)
@@ -183,12 +183,12 @@ function ewtOptionsInit()
 	end);
 
 	-- Alpha Frame
-	local ewtAlphaFrame = CF("Frame", "ewtAlphaFrame", ewtOptions)
+	local ewtAlphaFrame = CF("Frame", "ewtAlphaFrame", ewtOptions, "BackdropTemplate")
 	ewtAlphaFrame:SetPoint("TOPLEFT", ewtScaleFrame, "TOPRIGHT", 8, 0)
 	ewtAlphaFrame:SetBackdrop(ewtOptionsBG)
 	ewtAlphaFrame:SetSize(150, 75)
 
-	-- Skill Helper Alpha
+	-- Easy Warmode Alpha
 	local ewtAlpha = CF("Slider", "ewtAlpha", ewtAlphaFrame, "OptionsSliderTemplate")
 	ewtAlpha:SetSize(120, 16)
 	ewtAlpha:SetOrientation('HORIZONTAL')
